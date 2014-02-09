@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.version       = GetProcessMem::VERSION
   gem.authors       = ["Richard Schneeman"]
   gem.email         = ["richard.schneeman+rubygems@gmail.com"]
-  gem.description   = %q{ Get memory usage of a process }
+  gem.description   = %q{ Get memory usage of a process in Ruby }
   gem.summary       = %q{ Use GetProcessMem to find out the amount of RAM used by any process }
   gem.homepage      = "https://github.com/schneems/get_process_mem"
   gem.license       = "MIT"

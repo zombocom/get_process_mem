@@ -1,5 +1,7 @@
 # Get Process Memory
 
+[![Build Status](https://travis-ci.org/schneems/get_process_memory.png?branch=master)](https://travis-ci.org/schneems/get_process_memory)
+
 Do you need to get the memory useage of a process? Great because this library does that.
 
 ## Install
