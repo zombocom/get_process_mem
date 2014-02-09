@@ -78,7 +78,7 @@ class GetProcessMem
   def linux_memory
     line = @process_file.read.each_line.detect {|line| line.include? mem_type_for_linux }
     return unless line
-    return unless (value, unit = line.split(nil)).length == 3
+    return unless (name, value, unit = line.split(nil)).length == 3
     multiplier = CONVERSION[unit.downcase]
     multiplier * value.to_i
   end
