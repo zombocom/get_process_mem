@@ -37,10 +37,6 @@ class GetProcessMem
     b.fdiv(GB_TO_BYTE)
   end
 
-  def refresh
-    @bytes = nil
-  end
-
   def inspect
     b = bytes
     "#<#{self.class}:0x%08x @mb=#{mb b } @gb=#{gb b } @kb=#{kb b } @bytes=#{b}>" % (object_id * 2)
