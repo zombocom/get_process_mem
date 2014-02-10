@@ -76,11 +76,10 @@ class GetProcessMem
   # linux stores memory info in a file "/proc/#{pid}/status"
   # If it's available it uses less resources than shelling out to ps
   def linux_memory
-    line = @process_file.read.each_line.detect {|line| line.include? mem_type_for_linux }
+    line = @process_file.each_line.detect {|line| line.include? mem_type_for_linux }
     return unless line
     return unless (name, value, unit = line.split(nil)).length == 3
-    multiplier = CONVERSION[unit.downcase]
-    multiplier * value.to_i
+    CONVERSION[unit.downcase] * value.to_i
   end
 end
 
