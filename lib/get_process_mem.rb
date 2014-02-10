@@ -26,15 +26,15 @@ class GetProcessMem
   end
 
   def kb(b = bytes)
-    b.to_f/KB_TO_BYTE
+    b.fdiv(KB_TO_BYTE)
   end
 
   def mb(b = bytes)
-    b.to_f/MB_TO_BYTE
+    b.fdiv(MB_TO_BYTE)
   end
 
   def gb(b = bytes)
-    b.to_f/GB_TO_BYTE
+    b.fdiv(GB_TO_BYTE)
   end
 
   def refresh
