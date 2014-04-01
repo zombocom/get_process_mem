@@ -10,7 +10,7 @@ class GetProcessMem
   attr_reader :pid
 
   def initialize(pid = Process.pid, mem_type = MEM_TYPE)
-    @process_file = Pathname.new "/proc/#{pid}/status"
+    @process_file = Pathname.new "/proc/#{pid}/smaps"
     @pid          = pid
     @linux        = @process_file.exist?
     self.mem_type = mem_type
@@ -65,17 +65,23 @@ class GetProcessMem
   def mem_type_for_linux
     case mem_type
     when 'rss'
-      'VmRSS'
+      'Rss'
+    when 'pss'
+      'Pss'
     end
   end
 
-  # linux stores memory info in a file "/proc/#{pid}/status"
+  # linux stores memory info in a file "/proc/#{pid}/smaps"
   # If it's available it uses less resources than shelling out to ps
+  # It also allows us to use Pss (the process' proportional share of
+  # the mapping that is resident in RAM) as mem_type
   def linux_memory
-    line = @process_file.each_line.detect {|line| line.include? mem_type_for_linux }
-    return unless line
-    return unless (name, value, unit = line.split(nil)).length == 3
-    CONVERSION[unit.downcase] * value.to_i
+    lines = @process_file.each_line.select {|line| line.include? mem_type_for_linux }
+    return unless lines.length > 0
+    lines.reduce(0) do |sum, line|
+      return unless (name, value, unit = line.split(nil)).length == 3
+      sum += CONVERSION[unit.downcase] * value.to_i
+    end
   end
 end
 
