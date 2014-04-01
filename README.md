@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/schneems/get_process_mem.png?branch=master)](https://travis-ci.org/schneems/get_process_mem)
 
-Do you need to get the memory useage of a process? Great because this library does that.
+Do you need to get the memory usage of a process? Great because this library does that.
 
 ## Install
 
@@ -28,7 +28,7 @@ mem.mb    # => 24.28125
 mem.gb    # => 0.023712158203125
 ```
 
-Note: all numeric values returned as a float except bytes which is an integer.
+Note: All numeric values returned as a float except bytes which is an integer.
 
 Get memory usage of another process:
 
