@@ -6,14 +6,14 @@ class GetProcessMem
   MB_TO_BYTE = 1_048_576     # 1024**2 = 1_048_576
   GB_TO_BYTE = 1_073_741_824 # 1024**3 = 1_073_741_824
   CONVERSION = { "kb" => KB_TO_BYTE, "mb" => MB_TO_BYTE, "gb" => GB_TO_BYTE}
-  MEM_TYPE   = "rss" # http://en.wikipedia.org/wiki/Resident_set_size
   attr_reader :pid
 
-  def initialize(pid = Process.pid, mem_type = MEM_TYPE)
+  def initialize(pid = Process.pid, options = {})
     @process_file = Pathname.new "/proc/#{pid}/smaps"
     @pid          = pid
     @linux        = @process_file.exist?
-    self.mem_type = mem_type
+    options[:mem_type] ||= @linux ? 'pss' : 'rss'
+    self.mem_type = options[:mem_type]
   end
 
   def linux?
