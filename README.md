@@ -53,7 +53,6 @@ The memory type can be specified by passing an options hash:
 
 ```ruby
 GetProcessMem.new(Process.pid, mem_type: 'rss')
-
 ```
 
 
