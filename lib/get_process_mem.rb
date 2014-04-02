@@ -12,8 +12,7 @@ class GetProcessMem
     @process_file = Pathname.new "/proc/#{pid}/smaps"
     @pid          = pid
     @linux        = @process_file.exist?
-    defaults = { mem_type: @linux ? 'pss' : 'rss' }
-    options = defaults.merge(options)
+    options[:mem_type] ||= @linux ? 'pss' : 'rss'
     self.mem_type = options[:mem_type]
   end
 
