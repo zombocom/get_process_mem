@@ -47,7 +47,14 @@ mem.inspect
 `rm tmplog`
 ```
 
-For memory size we return the RSS or the [Resident Set Size](http://en.wikipedia.org/wiki/Resident_set_size), basically how much memory the program takes up in RAM at the time. It's all I needed for the project.
+On Linux, which provides `/proc/<pid>/smaps`, the default memory type returned is PSS, or "proportional set size", where shared memory is divided by the number of processes sharing it. On other platforms, the size returned is the RSS or the [Resident Set Size](http://en.wikipedia.org/wiki/Resident_set_size), basically how much memory the program takes up in RAM at the time, including all the shared memory.
+
+The memory type can be specified by passing an options hash:
+
+```ruby
+GetProcessMem.new(Process.pid, mem_type: 'rss')
+
+```
 
 
 
