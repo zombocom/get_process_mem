@@ -80,7 +80,9 @@ class GetProcessMem
     return unless lines.length > 0
     lines.reduce(0) do |sum, line|
       return unless (name, value, unit = line.split(nil)).length == 3
-      sum += CONVERSION[unit.downcase] * value.to_i
+      # The PSS value is truncated, and adding 0.5 should average this out
+      value = value.to_f + 0.5 if mem_type == 'pss'
+      sum += CONVERSION[unit.downcase] * value.to_f
     end
   end
 end
