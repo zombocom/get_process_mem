@@ -21,8 +21,11 @@ class GetProcessMem
   end
 
   def bytes
-    memory =   linux_memory if linux?
-    memory ||= ps_memory
+    if linux?
+      linux_memory
+    else
+      ps_memory
+    end
   end
 
   def kb(b = bytes)
@@ -77,7 +80,7 @@ class GetProcessMem
   # the mapping that is resident in RAM) as mem_type
   def linux_memory
     lines = @process_file.each_line.select {|line| line.include? mem_type_for_linux }
-    return unless lines.length > 0
+    return 0 unless lines.length > 0
     lines.reduce(0) do |sum, line|
       return unless (name, value, unit = line.split(nil)).length == 3
       # The PSS value is truncated, and adding 0.5 should average this out
