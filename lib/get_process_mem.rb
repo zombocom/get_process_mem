@@ -2,6 +2,12 @@ require 'pathname'
 
 # Cribbed from Unicorn Worker Killer, thanks!
 class GetProcessMem
+  # Memory types
+  PROPORTIONAL = 'pss'
+  PROPORTIONAL_FOR_SMAPS = 'Pss'
+  RESIDENT = 'rss'
+  RESIDENT_FOR_SMAPS = 'Rss'
+
   KB_TO_BYTE = 1024          # 2**10   = 1024
   MB_TO_BYTE = 1_048_576     # 1024**2 = 1_048_576
   GB_TO_BYTE = 1_073_741_824 # 1024**3 = 1_073_741_824
@@ -12,7 +18,7 @@ class GetProcessMem
     @process_file = Pathname.new "/proc/#{pid}/smaps"
     @pid          = pid
     @linux        = @process_file.exist?
-    options[:mem_type] ||= @linux ? 'pss' : 'rss'
+    options[:mem_type] ||= @linux ? PROPORTIONAL : RESIDENT
     self.mem_type = options[:mem_type]
   end
 
@@ -21,11 +27,8 @@ class GetProcessMem
   end
 
   def bytes
-    if linux?
-      linux_memory
-    else
-      ps_memory
-    end
+    memory = linux_memory if linux?
+    memory ||= ps_memory
   end
 
   def kb(b = bytes)
@@ -61,16 +64,25 @@ class GetProcessMem
     KB_TO_BYTE * `ps -o #{mem_type_for_ps}= -p #{pid}`.to_i
   end
 
+  # If we are on a linux system and have fallen back on `ps` then we
+  # need to ensure we force the mem_type when we run `ps` to be 'rss'
+  # because 'pss' will break.
   def mem_type_for_ps
-    mem_type
+    # We check linux? in case someone explicitly set options[:mem_type]
+    # => 'pss' in case pss is valid in some OSs...
+    if linux? && mem_type == PROPORTIONAL
+      RESIDENT
+    else
+      mem_type
+    end
   end
 
   def mem_type_for_linux
     case mem_type
-    when 'rss'
-      'Rss'
-    when 'pss'
-      'Pss'
+    when RESIDENT
+      RESIDENT_FOR_SMAPS
+    when PROPORTIONAL
+      PROPORTIONAL_FOR_SMAPS
     end
   end
 
@@ -79,12 +91,15 @@ class GetProcessMem
   # It also allows us to use Pss (the process' proportional share of
   # the mapping that is resident in RAM) as mem_type
   def linux_memory
+    # Safeguard against a mem_type being specified that does not map to
+    # either Pss or Rss for some reason.
+    return unless mem_type_for_linux
     lines = @process_file.each_line.select {|line| line.include? mem_type_for_linux }
-    return 0 unless lines.length > 0
+    return unless lines.length > 0
     lines.reduce(0) do |sum, line|
       return unless (name, value, unit = line.split(nil)).length == 3
       # The PSS value is truncated, and adding 0.5 should average this out
-      value = value.to_f + 0.5 if mem_type == 'pss'
+      value = value.to_f + 0.5 if mem_type == PROPORTIONAL
       sum += CONVERSION[unit.downcase] * value.to_f
     end
   end
