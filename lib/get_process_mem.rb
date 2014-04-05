@@ -40,7 +40,7 @@ class GetProcessMem
 
   def inspect
     b = bytes
-    "#<#{self.class}:0x%08x @mb=#{mb b } @gb=#{gb b } @kb=#{kb b } @bytes=#{b}>" % (object_id * 2)
+    "#<#{self.class}:0x%08x @mb=#{ mb b } @gb=#{ gb b } @kb=#{ kb b } @bytes=#{b}>" % (object_id * 2)
   end
 
   def mem_type
