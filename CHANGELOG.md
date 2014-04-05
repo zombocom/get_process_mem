@@ -1,3 +1,6 @@
+## 0.1.1
+- Bugfix: the `ps` style of memory reporting should always use RSS, and Linux should always use PSS
+
 ## 0.1.0
 
 - Default to using PSS for linux (#2 & #3) @ksoderstrom
