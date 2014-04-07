@@ -56,7 +56,7 @@ class GetProcessMem
   # It also allows us to use Pss (the process' proportional share of
   # the mapping that is resident in RAM) as mem_type
   def linux_memory(file = @process_file)
-    lines = file.each_line.select {|line| line.match /^Pss/ }
+    lines = file.each_line.select {|line| line.match /(^Pss|^Swap)/ }
     return if lines.empty?
     lines.reduce(0) do |sum, line|
       line.match(/(?<value>(\d*\.{0,1}\d+))\s+(?<unit>\w\w)/) do |m|
