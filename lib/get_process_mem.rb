@@ -17,17 +17,6 @@ class GetProcessMem
     @linux        = @process_file.exist?
   end
 
-  def self.all
-    if proc = Pathname.new("/proc").exist?
-      proc.each_entry.map do |entry|
-        smap = entry.join("smaps")
-        linux_memory_from_smap(smap) if smap.exist?
-      end.reduce(:+)
-    else
-
-    end
-  end
-
   def linux?
     @linux
   end
