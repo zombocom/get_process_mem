@@ -1,4 +1,9 @@
+## 0.2.1
+
+- Reverting back to RSS for linux until (#7) is resolved
+
 ## 0.1.1
+
 - Bugfix: the `ps` style of memory reporting should always use RSS, and Linux should always use PSS
 
 ## 0.1.0
