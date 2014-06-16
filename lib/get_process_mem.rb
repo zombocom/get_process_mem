@@ -53,19 +53,19 @@ class GetProcessMem
 
   # linux stores memory info in a file "/proc/#{pid}/smaps"
   # If it's available it uses less resources than shelling out to ps
-  # It also allows us to use Pss (the process' proportional share of
-  # the mapping that is resident in RAM) as mem_type
   def linux_memory(file = @process_file)
-    lines = file.each_line.select {|line| line.match /^Pss/ }
+    lines = file.each_line.select {|line| line.match /^Rss/ }
     return if lines.empty?
     lines.reduce(0) do |sum, line|
       line.match(/(?<value>(\d*\.{0,1}\d+))\s+(?<unit>\w\w)/) do |m|
         value = BigDecimal.new(m[:value]) + ROUND_UP
         unit  = m[:unit].downcase
-        sum += CONVERSION[unit] * value
+        sum  += CONVERSION[unit] * value
       end
       sum
     end
+  rescue Errno::EACCES
+    0
   end
 
   private
@@ -76,5 +76,3 @@ class GetProcessMem
     KB_TO_BYTE * BigDecimal.new(`ps -o rss= -p #{pid}`)
   end
 end
-
-GetProcessMem
