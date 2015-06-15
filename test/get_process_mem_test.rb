@@ -19,6 +19,11 @@ class GetProcessMemTest < Test::Unit::TestCase
     assert_in_delta BigDecimal.new("2122240.0"), bytes, delta
   end
 
+  def test_linux_status
+    bytes = @mem.linux_status_memory(fixture_path("heroku-bash-status"))
+    assert_equal bytes, 2080768
+  end
+
   def test_conversions
     bytes = 0
     delta = BigDecimal.new("0.0000001")
