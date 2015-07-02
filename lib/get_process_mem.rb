@@ -27,15 +27,15 @@ class GetProcessMem
   end
 
   def kb(b = bytes)
-    (b/BigDecimal.new(KB_TO_BYTE)).to_f
+    (b/BigDecimal.new(KB_TO_BYTE.to_s)).to_f
   end
 
   def mb(b = bytes)
-    (b/BigDecimal.new(MB_TO_BYTE)).to_f
+    (b/BigDecimal.new(MB_TO_BYTE.to_s)).to_f
   end
 
   def gb(b = bytes)
-    (b/BigDecimal.new(GB_TO_BYTE)).to_f
+    (b/BigDecimal.new(GB_TO_BYTE.to_s)).to_f
   end
 
   def inspect
