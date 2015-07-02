@@ -57,11 +57,11 @@ class GetProcessMem
     lines = file.each_line.select {|line| line.match /^Rss/ }
     return if lines.empty?
     lines.reduce(0) do |sum, line|
-      line.match(/(\d*\.{0,1}\d+)\s+(\w\w)/) do |m|
-        value = BigDecimal.new(m[1]) + ROUND_UP
-        unit  = m[2].downcase
-        sum  += CONVERSION[unit] * value
-      end
+      m = line.match(/(\d*\.{0,1}\d+)\s+(\w\w)/)
+      next unless m
+      value = BigDecimal.new(m[1]) + ROUND_UP
+      unit  = m[2].downcase
+      sum  += CONVERSION[unit] * value
       sum
     end
   rescue Errno::EACCES
