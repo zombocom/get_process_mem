@@ -57,9 +57,9 @@ class GetProcessMem
     lines = file.each_line.select {|line| line.match /^Rss/ }
     return if lines.empty?
     lines.reduce(0) do |sum, line|
-      line.match(/(?<value>(\d*\.{0,1}\d+))\s+(?<unit>\w\w)/) do |m|
-        value = BigDecimal.new(m[:value]) + ROUND_UP
-        unit  = m[:unit].downcase
+      line.match(/(\d*\.{0,1}\d+)\s+(\w\w)/) do |m|
+        value = BigDecimal.new(m[1]) + ROUND_UP
+        unit  = m[2].downcase
         sum  += CONVERSION[unit] * value
       end
       sum
