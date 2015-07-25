@@ -54,7 +54,7 @@ class GetProcessMem
   # linux stores memory info in a file "/proc/#{pid}/smaps"
   # If it's available it uses less resources than shelling out to ps
   def linux_memory(file = @process_file)
-    lines = file.each_line.select {|line| line.match /^Rss/ }
+    lines = file.each_line.select {|line| line.match(/^Rss/) }
     return if lines.empty?
     lines.reduce(0) do |sum, line|
       line.match(/(?<value>(\d*\.{0,1}\d+))\s+(?<unit>\w\w)/) do |m|
