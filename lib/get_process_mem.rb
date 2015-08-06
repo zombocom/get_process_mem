@@ -44,14 +44,6 @@ class GetProcessMem
     "#<#{self.class}:0x%08x @mb=#{ mb b } @gb=#{ gb b } @kb=#{ kb b } @bytes=#{b}>" % (object_id * 2)
   end
 
-  def mem_type
-    @mem_type
-  end
-
-  def mem_type=(mem_type)
-    @mem_type = mem_type.downcase
-  end
-
   # linux stores memory info in a file "/proc/#{pid}/status"
   # If it's available it uses less resources than shelling out to ps
   def linux_status_memory(file = @status_file)
