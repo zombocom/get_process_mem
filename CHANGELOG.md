@@ -1,4 +1,4 @@
-## 0.2.1
+## 0.2.0
 
 - Reverting back to RSS for linux until (#7) is resolved
 
