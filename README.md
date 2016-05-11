@@ -20,7 +20,8 @@ then run `$ bundle install`
 Get the current process memory usage:
 
 ```ruby
-puts mem = GetProcessMem.new.inspect
+mem = GetProcessMem.new
+puts mem.inspect
 #<GetProcessMem @mb=24.28125 @gb=0.023712158203125 @kb=24864.0 @bytes=25460736 >
 mem.bytes # => 25460736
 mem.kb    # => 24864.0
