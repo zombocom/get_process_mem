@@ -1,6 +1,12 @@
 require 'pathname'
 require 'bigdecimal'
 
+if Gem.win_platform?
+   require 'rubygems'
+   require 'sys/proctable'
+   include Sys
+end
+
 
 # Cribbed from Unicorn Worker Killer, thanks!
 class GetProcessMem
@@ -74,7 +80,13 @@ class GetProcessMem
   # Pull memory from `ps` command, takes more resources and can freeze
   # in low memory situations
   def ps_memory
-    KB_TO_BYTE * BigDecimal.new(`ps -o rss= -p #{pid}`)
+    case
+       when /mswin|mingw/ =~ RUBY_PLATFORM
+          size = ProcTable.ps(pid).working_set_size;
+          BigDecimal.new(size)
+       else
+          KB_TO_BYTE * BigDecimal.new(`ps -o rss= -p #{pid}`)
+    end
   end
 
 end
