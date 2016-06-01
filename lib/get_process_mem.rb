@@ -1,13 +1,6 @@
 require 'pathname'
 require 'bigdecimal'
 
-if Gem.win_platform?
-   require 'rubygems'
-   require 'sys/proctable'
-   include Sys
-end
-
-
 # Cribbed from Unicorn Worker Killer, thanks!
 class GetProcessMem
   KB_TO_BYTE = 1024          # 2**10   = 1024
@@ -16,6 +9,19 @@ class GetProcessMem
   CONVERSION = { "kb" => KB_TO_BYTE, "mb" => MB_TO_BYTE, "gb" => GB_TO_BYTE }
   ROUND_UP   = BigDecimal.new("0.5")
   attr_reader :pid
+
+  RUNS_ON_WINDOWS = Gem.win_platform?
+
+  if RUNS_ON_WINDOWS
+    begin
+      require 'sys/proctable'
+    rescue LoadError => e
+      message = "Please add `sys-proctable` to your Gemfile for windows machines\n"
+      message << e.message
+      raise e, message
+    end
+    include Sys
+  end
 
   def initialize(pid = Process.pid)
     @status_file  = Pathname.new "/proc/#{pid}/status"
@@ -80,13 +86,11 @@ class GetProcessMem
   # Pull memory from `ps` command, takes more resources and can freeze
   # in low memory situations
   def ps_memory
-    case
-       when /mswin|mingw/ =~ RUBY_PLATFORM
-          size = ProcTable.ps(pid).working_set_size;
-          BigDecimal.new(size)
-       else
-          KB_TO_BYTE * BigDecimal.new(`ps -o rss= -p #{pid}`)
+    if RUNS_ON_WINDOWS
+      size = ProcTable.ps(pid).working_set_size
+      BigDecimal.new(size)
+    else
+      KB_TO_BYTE * BigDecimal.new(`ps -o rss= -p #{pid}`)
     end
   end
-
 end
