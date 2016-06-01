@@ -12,8 +12,9 @@ In your `Gemfile` add
 gem 'get_process_mem'
 ```
 
-then run `$ bundle install`
+then run `$ bundle install`.
 
+If you're using Windows you'll also need to have the `sys-proctable` gem.
 
 ## Use It
 
