@@ -90,7 +90,8 @@ class GetProcessMem
       size = ProcTable.ps(pid).working_set_size
       BigDecimal.new(size)
     else
-      KB_TO_BYTE * BigDecimal.new(`ps -o rss= -p #{pid}`)
+      mem = `ps -o rss= -p #{pid}`
+      KB_TO_BYTE * BigDecimal.new(mem == "" ? 0 : mem)
     end
   end
 end
