@@ -1,3 +1,7 @@
+## 0.2.3
+
+-  Silence BigDecimal deprecation warning under Ruby 2.5 (#26)
+
 ## 0.2.2
 
 - Fix support for Ruby 2.4 (#23)
