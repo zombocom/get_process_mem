@@ -7,7 +7,7 @@ class GetProcessMem
   MB_TO_BYTE = 1_048_576     # 1024**2 = 1_048_576
   GB_TO_BYTE = 1_073_741_824 # 1024**3 = 1_073_741_824
   CONVERSION = { "kb" => KB_TO_BYTE, "mb" => MB_TO_BYTE, "gb" => GB_TO_BYTE }
-  ROUND_UP   = BigDecimal.new("0.5")
+  ROUND_UP   = Kernel.respond_to?(:BigDecimal) ? BigDecimal("0.5") : BigDecimal.new("0.5")
   attr_reader :pid
 
   RUNS_ON_WINDOWS = Gem.win_platform?
@@ -40,15 +40,15 @@ class GetProcessMem
   end
 
   def kb(b = bytes)
-    (b/BigDecimal.new(KB_TO_BYTE)).to_f
+    (b/coerce_to_big_decimal(KB_TO_BYTE)).to_f
   end
 
   def mb(b = bytes)
-    (b/BigDecimal.new(MB_TO_BYTE)).to_f
+    (b/coerce_to_big_decimal(MB_TO_BYTE)).to_f
   end
 
   def gb(b = bytes)
-    (b/BigDecimal.new(GB_TO_BYTE)).to_f
+    (b/coerce_to_big_decimal(GB_TO_BYTE)).to_f
   end
 
   def inspect
@@ -73,7 +73,7 @@ class GetProcessMem
     return if lines.empty?
     lines.reduce(0) do |sum, line|
       line.match(/(?<value>(\d*\.{0,1}\d+))\s+(?<unit>\w\w)/) do |m|
-        value = BigDecimal.new(m[:value]) + ROUND_UP
+        value = coerce_to_big_decimal(m[:value]) + ROUND_UP
         unit  = m[:unit].downcase
         sum  += CONVERSION[unit] * value
       end
@@ -88,10 +88,22 @@ class GetProcessMem
   def ps_memory
     if RUNS_ON_WINDOWS
       size = ProcTable.ps(pid).working_set_size
-      BigDecimal.new(size)
+      coerce_to_big_decimal(size)
     else
       mem = `ps -o rss= -p #{pid}`
-      KB_TO_BYTE * BigDecimal.new(mem == "" ? 0 : mem)
+      KB_TO_BYTE * coerce_to_big_decimal(mem == "" ? 0 : mem)
     end
   end
+
+  private
+
+  def coerce_to_big_decimal(value)
+    if Kernel.respond_to?(:BigDecimal)
+      #running under Ruby 2.5 or later
+      BigDecimal(value)
+    else
+      BigDecimal.new(value)
+    end
+  end
+
 end
