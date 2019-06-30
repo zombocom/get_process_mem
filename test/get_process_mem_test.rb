@@ -16,7 +16,7 @@ class GetProcessMemTest < Test::Unit::TestCase
   def test_linux_smap
     delta = 1
     bytes = @mem.linux_memory(fixture_path("heroku-bash-smap"))
-    assert_in_delta BigDecimal.new("2122240.0"), bytes, delta
+    assert_in_delta BigDecimal("2122240.0"), bytes, delta
   end
 
   def test_linux_status
@@ -26,7 +26,7 @@ class GetProcessMemTest < Test::Unit::TestCase
 
   def test_conversions
     bytes = 0
-    delta = BigDecimal.new("0.0000001")
+    delta = BigDecimal("0.0000001")
     assert_in_delta  0.0, @mem.kb(bytes), delta
     assert_in_delta  0.0, @mem.mb(bytes), delta
     assert_in_delta  0.0, @mem.gb(bytes), delta
