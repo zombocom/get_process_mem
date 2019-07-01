@@ -3,14 +3,8 @@ require 'bigdecimal'
 
 # Cribbed from Unicorn Worker Killer, thanks!
 class GetProcessMem
-  if Kernel.respond_to?(:BigDecimal)
-    private_class_method def self.number_to_bigdecimal(value)
-      BigDecimal(value)
-    end
-  else
-    private_class_method def self.number_to_bigdecimal(value)
-      BigDecimal.new(value)
-    end
+  private_class_method def self.number_to_bigdecimal(value)
+    BigDecimal(value)
   end
 
   private def number_to_bigdecimal(value)
