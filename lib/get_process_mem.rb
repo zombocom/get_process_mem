@@ -31,6 +31,20 @@ class GetProcessMem
     include Sys
   end
 
+  RUNS_ON_DARWIN =  Gem.platforms.detect do |p|
+                      p.is_a?(Gem::Platform) && p.os == 'darwin'
+                    end
+
+  if RUNS_ON_DARWIN
+    begin
+      require 'get_process_mem/darwin'
+    rescue LoadError => e
+      message = "Please add `ffi` to your Gemfile for darwin (macos) machines\n"
+      message << e.message
+      raise e, message
+    end
+  end
+
   def initialize(pid = Process.pid)
     @status_file  = Pathname.new "/proc/#{pid}/status"
     @process_file = Pathname.new "/proc/#{pid}/smaps"
@@ -44,6 +58,7 @@ class GetProcessMem
 
   def bytes
     memory =   linux_status_memory if linux?
+    memory ||= darwin_memory if RUNS_ON_DARWIN
     memory ||= ps_memory
   end
 
@@ -101,5 +116,9 @@ class GetProcessMem
       mem = `ps -o rss= -p #{pid}`
       KB_TO_BYTE * number_to_bigdecimal(mem == "" ? 0 : mem)
     end
+  end
+
+  def darwin_memory
+    Darwin.resident_size
   end
 end

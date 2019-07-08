@@ -1,6 +1,10 @@
+## 0.2.4
+
+- Use FFI to speed up memory lookup on Mac (darwin) by roughly 12x (#32)
+
 ## 0.2.3
 
--  Silence BigDecimal deprecation warning under Ruby 2.5 (#26)
+- Silence BigDecimal deprecation warning under Ruby 2.5 (#26)
 
 ## 0.2.2
 
