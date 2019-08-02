@@ -4,17 +4,17 @@ os:
   - osx
 
 before_install:
-  - gem install bundler -v 1.12.5
+  - gem install bundler -v 1.17.3
 
 rvm:
-  - 2.2.0
-  - 2.5.0
+  - 2.2
+  - 2.6
   - ruby-head
-  - jruby-19mode
-  - rbx-19mode
+  - jruby-head
+  - truffleruby
 
 matrix:
   allow_failures:
     - rvm: ruby-head
-    - rvm: rbx-19mode
-    - rvm: jruby-19mode
+    - rvm: jruby-head
+    - rvm: truffleruby
