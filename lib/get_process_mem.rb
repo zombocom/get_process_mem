@@ -110,7 +110,7 @@ class GetProcessMem
   # in low memory situations
   def ps_memory
     if RUNS_ON_WINDOWS
-      size = ProcTable.ps(pid).working_set_size
+      size = ProcTable.ps(pid: pid).working_set_size
       number_to_bigdecimal(size)
     else
       mem = `ps -o rss= -p #{pid}`

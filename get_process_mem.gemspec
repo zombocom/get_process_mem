@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "ffi", "~> 1.0"
 
-  gem.add_development_dependency "sys-proctable", "~> 1.0"
+  gem.add_development_dependency "sys-proctable", "~> 1.2"
   gem.add_development_dependency "rake",  "~> 10.1"
   gem.add_development_dependency "test-unit", "~> 3.1.0"
 end
