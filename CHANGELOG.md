@@ -1,3 +1,9 @@
+## Master - unreleased
+
+## 0.2.5
+
+- Use new sys-proctable interface (https://github.com/schneems/get_process_mem/pull/36)
+
 ## 0.2.4
 
 - Use FFI to speed up memory lookup on Mac (darwin) by roughly 12x (#32)
