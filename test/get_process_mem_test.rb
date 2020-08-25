@@ -1,9 +1,18 @@
 require 'test_helper'
 
 class GetProcessMemTest < Test::Unit::TestCase
-
   def setup
     @mem = GetProcessMem.new
+  end
+
+  def test_different_pid_returns_different_memory
+    pid = Process.spawn("tail -f Gemfile")
+
+    other_mem = GetProcessMem.new(pid)
+    assert @mem.kb > other_mem.kb
+  ensure
+    Process.kill('TERM', pid) if pid
+    Process.wait(pid) if pid
   end
 
   def test_seems_to_work

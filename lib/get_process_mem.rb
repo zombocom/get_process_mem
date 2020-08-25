@@ -58,7 +58,7 @@ class GetProcessMem
 
   def bytes
     memory =   linux_status_memory if linux?
-    memory ||= darwin_memory if RUNS_ON_DARWIN
+    memory ||= darwin_memory if RUNS_ON_DARWIN && Process.pid == pid
     memory ||= ps_memory
   end
 
