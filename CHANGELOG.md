@@ -1,5 +1,9 @@
 ## Master - unreleased
 
+## 0.2.6
+
+- Support returning memory from different PIDs on mac (https://github.com/schneems/get_process_mem/pull/41)
+
 ## 0.2.5
 
 - Use new sys-proctable interface (https://github.com/schneems/get_process_mem/pull/36)
