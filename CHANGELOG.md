@@ -1,4 +1,6 @@
-## Master - unreleased
+## HEAD (unreleased)
+
+- Native (faster) support for returning memory from different PIDs on mac (https://github.com/schneems/get_process_mem/pull/42)
 
 ## 0.2.6
 
