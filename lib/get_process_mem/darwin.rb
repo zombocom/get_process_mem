@@ -3,49 +3,59 @@ require 'ffi'
 class GetProcessMem
   class Darwin
     extend FFI::Library
-    ffi_lib 'c'
-    attach_function :mach_task_self, [], :__darwin_mach_port_t
-    attach_function :task_info,
+    ffi_lib 'proc'
+
+
+    class TaskInfo < FFI::Struct
+      layout :pti_virtual_size, :uint64,
+             :pti_resident_size, :uint64,
+             :pti_total_user, :uint64,
+             :pti_total_system, :uint64,
+             :pti_threads_user, :uint64,
+             :pti_threads_system, :uint64,
+             :pti_policy, :int32,
+             :pti_faults, :int32,
+             :pti_pageins, :int32,
+             :pti_cow_faults, :int32,
+             :pti_messages_sent, :int32,
+             :pti_messages_received, :int32,
+             :pti_syscalls_mach, :int32,
+             :pti_syscalls_unix, :int32,
+             :pti_csw, :int32,
+             :pti_threadnum, :int32,
+             :pti_numrunning, :int32,
+             :pti_priority, :int32
+
+    end
+
+
+    attach_function :proc_pidinfo,
                     [
-                      :__darwin_mach_port_t,
-                      :int,     # return selector
-                      :pointer, #pointer to task info
-                      :pointer, #pointer to int (size of structure / bytes filled out)
+                      :int, #pid
+                      :int, # flavour
+                      :uint64, #arg, not needed for this selector
+                      TaskInfo.by_ref, #output buffer
+                      :int, #size of buffer
                     ],
                     :int
 
-    class IntPtr < FFI::Struct
-      layout :value, :int
-    end
 
-    class TaskInfo < FFI::Struct
-      layout  :suspend_count, :int32,
-              :virtual_size, :uint64,
-              :resident_size, :uint64,
-              :user_time, :uint64,
-              :system_time, :uint64,
-              :policy, :int32
-    end
-
-    MACH_TASK_BASIC_INFO = 20
-    MACH_TASK_BASIC_INFO_COUNT = TaskInfo.size / FFI.type_size(:uint)
+    PROC_PIDTASKINFO = 4 #from sys/proc_info.h
 
     class << self
-      def resident_size
-        mach_task_info[:resident_size]
+      def resident_size(pid)
+        get_proc_pidinfo(pid)[:pti_resident_size]
       end
 
       private
 
-      def mach_task_info
+      def get_proc_pidinfo(pid)
         data = TaskInfo.new
-        out_count = IntPtr.new
-        out_count[:value] = MACH_TASK_BASIC_INFO_COUNT
-        result = task_info(mach_task_self, MACH_TASK_BASIC_INFO, data, out_count)
-        if result == 0
+        result = proc_pidinfo(pid, PROC_PIDTASKINFO, 0, data, TaskInfo.size)
+        if result == TaskInfo.size
           data
         else
-          raise "task_info returned #{result}"
+          raise "proc_pidinfo returned #{result}, errno is #{FFI.errno}"
         end
       end
     end
