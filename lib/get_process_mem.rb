@@ -58,7 +58,7 @@ class GetProcessMem
 
   def bytes
     memory =   linux_status_memory if linux?
-    memory ||= darwin_memory if RUNS_ON_DARWIN && Process.pid == pid
+    memory ||= darwin_memory if RUNS_ON_DARWIN
     memory ||= ps_memory
   end
 
@@ -119,6 +119,8 @@ class GetProcessMem
   end
 
   def darwin_memory
-    Darwin.resident_size
+    Darwin.resident_size(pid)
+  rescue Errno::EPERM
+    nil
   end
 end
