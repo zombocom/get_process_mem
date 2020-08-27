@@ -120,5 +120,7 @@ class GetProcessMem
 
   def darwin_memory
     Darwin.resident_size(pid)
+  rescue Errno::EPERM
+    nil
   end
 end
