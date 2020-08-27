@@ -55,7 +55,7 @@ class GetProcessMem
         if result == TaskInfo.size
           data
         else
-          raise "proc_pidinfo returned #{result}, errno is #{FFI.errno}"
+          raise SystemCallError.new("proc_pidinfo returned #{result}", FFI.errno);
         end
       end
     end
