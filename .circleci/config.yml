@@ -1,0 +1,43 @@
+version: 2
+orbs:
+  ruby: circleci/ruby@1.1.1
+
+references:
+  unit: &unit
+    run:
+      name: Run test suite
+      command: bundle exec rake test
+
+jobs:
+  "ruby-2.1":
+    docker:
+      - image: circleci/ruby:2.1
+    steps:
+      - checkout
+      - ruby/install-deps
+      - <<: *unit
+  "ruby-2.7":
+    docker:
+      - image: circleci/ruby:2.7
+    steps:
+      - checkout
+      - ruby/install-deps
+      - <<: *unit
+
+  "ruby-2.7-mac":
+    macos:
+      xcode: "11.3.0"
+    steps:
+      - checkout
+      - ruby/install:
+          version: '2.7'
+      - ruby/install-deps
+      - <<: *unit
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - "ruby-2.1"
+      - "ruby-2.7"
+      - "ruby-2.7-mac"
