@@ -48,7 +48,7 @@ class GetProcessMem
   def initialize(pid = Process.pid)
     @status_file  = Pathname.new "/proc/#{pid}/status"
     @process_file = Pathname.new "/proc/#{pid}/smaps"
-    @pid          = pid
+    @pid          = Integer(pid)
     @linux        = @status_file.exist?
   end
 

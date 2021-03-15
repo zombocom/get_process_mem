@@ -15,6 +15,15 @@ class GetProcessMemTest < Test::Unit::TestCase
     Process.wait(pid) if pid
   end
 
+  def test_invalid_pid
+    raised_exception = false
+    GetProcessMem.new('ls')
+  rescue ArgumentError
+    raised_exception = true
+  ensure
+    assert raised_exception
+  end
+
   def test_seems_to_work
     assert @mem.kb    > 0
     assert @mem.mb    > 0
