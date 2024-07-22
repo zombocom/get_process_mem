@@ -18,6 +18,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
+  gem.required_ruby_version = '>= 2.5'
+
   gem.add_dependency "ffi", "~> 1.0"
   gem.add_dependency "bigdecimal", ">= 2.0"
 
