@@ -1,4 +1,6 @@
 source "https://rubygems.org"
-gem 'sys-proctable'
+gem "sys-proctable"
 
 gemspec
+
+gem "standard"

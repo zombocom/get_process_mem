@@ -1,7 +1,7 @@
 # Get Process Memory
 
-[![Build Status](https://travis-ci.org/schneems/get_process_mem.svg?branch=master)](https://travis-ci.org/schneems/get_process_mem)
-[![Help Contribute to Open Source](https://www.codetriage.com/schneems/get_process_mem/badges/users.svg)](https://www.codetriage.com/schneems/get_process_mem)
+[![CI](https://github.com/zombocom/get_process_mem/actions/workflows/ci.yml/badge.svg)](https://github.com/zombocom/get_process_mem/actions/workflows/ci.yml)
+[![Help Contribute to Open Source](https://www.codetriage.com/zombocom/get_process_mem/badges/users.svg)](https://www.codetriage.com/zombocom/get_process_mem)
 
 Do you need to get the memory usage of a process? Great because this library does that.
 

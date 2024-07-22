@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class GetProcessMemTest < Test::Unit::TestCase
   def setup
@@ -11,7 +11,7 @@ class GetProcessMemTest < Test::Unit::TestCase
     other_mem = GetProcessMem.new(pid)
     assert @mem.kb > other_mem.kb
   ensure
-    Process.kill('TERM', pid) if pid
+    Process.kill("TERM", pid) if pid
     Process.wait(pid) if pid
   end
 
@@ -25,9 +25,9 @@ class GetProcessMemTest < Test::Unit::TestCase
   end
 
   def test_seems_to_work
-    assert @mem.kb    > 0
-    assert @mem.mb    > 0
-    assert @mem.gb    > 0
+    assert @mem.kb > 0
+    assert @mem.mb > 0
+    assert @mem.gb > 0
     assert @mem.bytes > 0
   end
 
@@ -45,26 +45,26 @@ class GetProcessMemTest < Test::Unit::TestCase
   def test_conversions
     bytes = 0
     delta = BigDecimal("0.0000001")
-    assert_in_delta  0.0, @mem.kb(bytes), delta
-    assert_in_delta  0.0, @mem.mb(bytes), delta
-    assert_in_delta  0.0, @mem.gb(bytes), delta
+    assert_in_delta 0.0, @mem.kb(bytes), delta
+    assert_in_delta 0.0, @mem.mb(bytes), delta
+    assert_in_delta 0.0, @mem.gb(bytes), delta
 
     # kb
     bytes = 1024
-    assert_in_delta  1.0,                 @mem.kb(bytes), delta
-    assert_in_delta  0.0009765625,        @mem.mb(bytes), delta
-    assert_in_delta  9.5367431640625e-07, @mem.gb(bytes), delta
+    assert_in_delta 1.0, @mem.kb(bytes), delta
+    assert_in_delta 0.0009765625, @mem.mb(bytes), delta
+    assert_in_delta 9.5367431640625e-07, @mem.gb(bytes), delta
 
     # mb
     bytes = 1_048_576
-    assert_in_delta  1024.0,              @mem.kb(bytes), delta
-    assert_in_delta  1.0,                 @mem.mb(bytes), delta
-    assert_in_delta  0.0009765625,        @mem.gb(bytes), delta
+    assert_in_delta 1024.0, @mem.kb(bytes), delta
+    assert_in_delta 1.0, @mem.mb(bytes), delta
+    assert_in_delta 0.0009765625, @mem.gb(bytes), delta
 
     # gb
     bytes = 1_073_741_824
-    assert_in_delta  1048576.0,           @mem.kb(bytes), delta
-    assert_in_delta  1024.0,              @mem.mb(bytes), delta
-    assert_in_delta  1.0,                 @mem.gb(bytes), delta
+    assert_in_delta 1048576.0, @mem.kb(bytes), delta
+    assert_in_delta 1024.0, @mem.mb(bytes), delta
+    assert_in_delta 1.0, @mem.gb(bytes), delta
   end
 end
