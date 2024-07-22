@@ -1,5 +1,7 @@
 ## HEAD (unreleased)
 
+
+- Ensure PID is an integer (https://github.com/schneems/get_process_mem/pull/46)
 - Minimum Ruby version is now Ruby 2.6
 - Add `bigdecimal` as a dependency.
 
