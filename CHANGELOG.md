@@ -1,5 +1,7 @@
 ## HEAD (unreleased)
 
+- Add `bigdecimal` as a dependency.
+
 ## 0.2.7
 
 - Native (faster) support for returning memory from different PIDs on mac (https://github.com/schneems/get_process_mem/pull/42)

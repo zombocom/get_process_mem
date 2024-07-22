@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency "ffi", "~> 1.0"
+  gem.add_dependency "bigdecimal", ">= 2.0"
 
   gem.add_development_dependency "sys-proctable", "~> 1.2"
   gem.add_development_dependency "rake", "~> 12"
