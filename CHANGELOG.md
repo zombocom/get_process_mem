@@ -1,5 +1,7 @@
 ## HEAD (unreleased)
 
+## 1.0.0
+
 - Minimum Ruby version is now Ruby 2.6
 - Add `bigdecimal` as a dependency.
 
