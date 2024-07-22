@@ -17,7 +17,7 @@ class GetProcessMemTest < Test::Unit::TestCase
 
   def test_invalid_pid
     raised_exception = false
-    GetProcessMem.new('ls')
+    GetProcessMem.new("ls")
   rescue ArgumentError
     raised_exception = true
   ensure
