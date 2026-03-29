@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.email = ["richard.schneeman+rubygems@gmail.com"]
   gem.description = " Get memory usage of a process in Ruby "
   gem.summary = " Use GetProcessMem to find out the amount of RAM used by any process "
-  gem.homepage = "https://github.com/schneems/get_process_mem"
+  gem.homepage = "https://github.com/zombocom/get_process_mem"
   gem.license = "MIT"
 
   gem.files = `git ls-files`.split($/)

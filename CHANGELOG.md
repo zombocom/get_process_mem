@@ -2,21 +2,21 @@
 
 ## 1.0.0
 
-- Ensure PID is an integer (https://github.com/schneems/get_process_mem/pull/46)
+- Ensure PID is an integer (https://github.com/zombocom/get_process_mem/pull/46)
 - Minimum Ruby version is now Ruby 2.6
 - Add `bigdecimal` as a dependency.
 
 ## 0.2.7
 
-- Native (faster) support for returning memory from different PIDs on mac (https://github.com/schneems/get_process_mem/pull/42)
+- Native (faster) support for returning memory from different PIDs on mac (https://github.com/zombocom/get_process_mem/pull/42)
 
 ## 0.2.6
 
-- Support returning memory from different PIDs on mac (https://github.com/schneems/get_process_mem/pull/41)
+- Support returning memory from different PIDs on mac (https://github.com/zombocom/get_process_mem/pull/41)
 
 ## 0.2.5
 
-- Use new sys-proctable interface (https://github.com/schneems/get_process_mem/pull/36)
+- Use new sys-proctable interface (https://github.com/zombocom/get_process_mem/pull/36)
 
 ## 0.2.4
 
